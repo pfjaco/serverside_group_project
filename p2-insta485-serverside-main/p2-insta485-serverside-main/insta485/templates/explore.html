@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block banner %}<a href="{{url_for('show_user', username = logname)}}">{{ logname }}</a>{% endblock banner%}
+{% block content %}
+    <h1>Discover People</h1>
+    {% for n in not_following %}
+        <img class = "notFollowingPicture" src="{{url_for('get_file', filename = n['profile_picture'])}}" alt="user photo">
+        <a href="{{url_for('show_user', username = n['username'])}}">{{ n["username"] }}</a>
+
+        <form action="{{url_for('handle_following_operations', target = url_for('show_explore'))}}" method="post" enctype="multipart/form-data">
+            <input type="submit" name="follow" value="follow"/>
+            <input type="hidden" name="username" value="{{n['username']}}"/>
+            <input type="hidden" name="operation" value="follow"/>
+          </form>
+    {% endfor %}
+{% endblock content %}

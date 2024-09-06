@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block banner %}<a href="{{url_for('show_user', username = logname)}}">{{logname}}</a>{% endblock banner%}
+{% block content %}
+    {% for post in posts %}
+        <a href="{{url_for('show_user', username = post['owner'])}}"><img class = "usernamePhoto" src="{{url_for('get_file', filename = post['profile_pictures']['filename'])}}" alt="user photo"></a>
+        <a href="{{url_for('show_user', username = post['owner'])}}">{{ post["owner"] }}</a>
+        <a href="{{url_for('show_post', postid = post['postid'])}}">{{post["created"]}}</a>
+        <br>
+        
+        <img class = "postPhoto" src="{{url_for('get_file', filename = post['filename'])}}" alt="posted photo">
+        
+        {% if likes[post['postid']] == 1 %}
+            <div>{{ likes[post['postid']] }} like</div>
+        {% else %}
+            <div>{{ likes[post['postid']] }} likes</div>
+        {% endif %}
+
+        {% for comment in post["comments"] %}
+            <p><a href="{{url_for('show_user', username = comment['owner'])}}">{{ comment["owner"] }}</a> {{comment["text"]}}</p>
+        {% endfor %}
+            <br>
+
+            {% if post["liked"] == 1 %}
+            <form action="{{url_for('post_like_unlike', target = url_for('show_index'))}}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="unlike"/>
+                <input type="hidden" name="postid" value="{{post['postid']}}"/>
+                <input type="submit" name="unlike" value="unlike"/>
+            </form>
+            
+            {% else %}
+            <form action="{{url_for('post_like_unlike', target = url_for('show_index'))}}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="like"/>
+                <input type="hidden" name="postid" value="{{post['postid']}}"/>
+                <input type="submit" name="like" value="like"/>
+            </form>
+
+            {% endif %}
+            
+            <br>
+
+            <form action="{{url_for('handle_comments', target = url_for('show_index'))}}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="create"/>
+                <input type="hidden" name="postid" value="{{post['postid']}}"/>
+                <input type="text" name="text" required/>
+                <input type="submit" name="comment" value="comment"/>
+            </form>
+            <br>
+    {% endfor %}
+{% endblock content %}

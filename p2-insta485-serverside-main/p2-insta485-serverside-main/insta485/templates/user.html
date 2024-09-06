@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block banner %}<a href="{{url_for('show_user', username = logname)}}">{{ logname }}</a>{% endblock banner%}
+{% block content %}
+    <div>{{ username }}</div>
+
+    {# Relationship #}
+    {% if is_following == 1 %}
+        <div>following</div>
+        <form action="{{url_for('handle_following_operations', target = url_for('show_user', username = username))}}" method="post" enctype="multipart/form-data">
+            <input type="submit" name="unfollow" value="unfollow"/>
+            <input type="hidden" name="username" value="{{username}}"/>
+            <input type="hidden" name="operation" value="unfollow"/>
+        </form>
+    {% elif is_following == 0 %}
+        <div>not following</div>
+        <form action="{{url_for('handle_following_operations', target = url_for('show_user', username = username))}}" method="post" enctype="multipart/form-data">
+            <input type="submit" name="follow" value="follow"/>
+            <input type="hidden" name="username" value="{{username}}"/>
+            <input type="hidden" name="operation" value="follow"/>
+        </form>
+    {% endif %}
+
+    {# Number of Posts #}
+    {% if num_posts == 1 %}
+        <div>{{ num_posts }} post</div>
+    {% else %}
+        <div>{{ num_posts }} posts</div>
+    {% endif %}
+
+    {# Number of followers #}
+    {% if num_followers == 1 %}
+        <a href="{{url_for('show_followers', username = username)}}">{{num_followers}} follower</a>
+    {% else %}
+        <a href="{{url_for('show_followers', username = username)}}">{{num_followers}} followers</a>
+    {% endif %}
+
+    {# Number following #}
+    <a href="{{url_for('show_following', username = username)}}">{{num_following}} following</a>
+
+    {# Name #}
+    <div>{{ fullname }}</div>
+
+    {% if logname == username %}
+        <a href = "{{url_for('display_edit_account_form')}}">Edit profile</a>
+
+        <form action="{{url_for('logout_user')}}" method="post" enctype="multipart/form-data">
+            <input type="submit" name="logout" value="Logout"/>
+        </form>
+
+        <form action="{{url_for('handle_post', target = url_for('show_user', username = logname))}}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required/>
+            <input type="submit" name="create_post" value="upload new post"/>
+            <input type="hidden" name="operation" value="create"/>
+        </form>
+        <br>
+    {% endif %}
+
+    {% if num_posts == 0 %}
+        <div>No posts yet.</div>
+    {% endif %}
+
+    {% for post in posts %}
+        <a href="{{url_for('show_post', postid = post['postid'])}}"><img class = "userPostImage" src="{{url_for('get_file', filename = post['filename'])}}" alt="posted photo"></a> 
+    {% endfor %}
+{% endblock content %}

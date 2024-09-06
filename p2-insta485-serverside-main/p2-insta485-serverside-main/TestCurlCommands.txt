@@ -1,0 +1,58 @@
+curl -X POST http://localhost:8000/accounts/ \
+  -F file=@var/uploads/"Dylan Revsine Photo.jpg" \
+  -F fullname="Dylan Revsine" \
+  -F username=drevsine \
+  -F email="dylan.revsine@gmail.com" \
+  -F password=hello \
+  -F operation=create \
+  --cookie-jar cookies.txt
+
+curl -X POST http://localhost:8000/accounts/?target=/users/drevsine/ \
+  -F username=drevsine \
+  -F password=hello \
+  -F operation=login \
+  --cookie-jar cookies.txt
+
+curl -X POST http://localhost:8000/accounts/ \
+ -F fullname="Dylan A Revsine" \
+ -F email="dylan.revsine@example.com" \
+ -F file=@var/uploads/meme.jpg \
+ -F operation=edit_account \
+ --cookie cookies.txt
+
+curl -X POST http://localhost:8000/accounts/?target=/users/drevsine/ \
+ -F password=hello \
+ -F new_password1=hello2 \
+ -F new_password2=hello2 \
+ -F operation=update_password \
+ --cookie cookies.txt
+
+curl -X POST http://localhost:8000/accounts/?target=/accounts/login/ \
+ -F operation=delete \
+ --cookie cookies.txt
+
+curl -X POST http://localhost:8000/posts/?target=/posts/3/ \
+ -F file=@var/uploads/meme.jpg \
+ -F operation=create \
+ --cookie cookies.txt
+
+curl -X POST http://localhost:8000/posts/?target=/posts/3/ \
+ -F postid=5 \
+ -F operation=delete \
+ --cookie cookies.txt
+
+curl -X POST http://localhost:8000/following/ \
+ -F username=awdeorio \
+ -F operation=follow \
+ --cookie cookies.txt
+
+curl -X POST http://localhost:8000/likes/ \
+ -F postid=3 \
+ -F operation=like \
+ --cookie cookies.txt
+
+curl -X POST http://localhost:8000/comments/ \
+ -F postid=4 \
+ -F text="Cool!" \
+ -F operation=create \
+ --cookie cookies.txt

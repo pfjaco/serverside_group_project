@@ -1,0 +1,34 @@
+.header
+{
+    text-align: right;
+}
+
+.usernamePhoto
+{
+    height: 35px;
+    width: 35px;
+}
+
+.postPhoto
+{
+    height: 300px;
+    width: 400px;
+}
+
+.userPostImage
+{
+    height: 300px;
+    width: 400px;
+}
+
+.followPicture
+{
+    height: 45px;
+    width: 45px;
+}
+
+.notFollowingPicture
+{
+    height: 45px;
+    width: 45px;
+}

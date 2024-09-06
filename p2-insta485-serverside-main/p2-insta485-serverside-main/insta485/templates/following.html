@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block banner %}<a href="{{url_for('show_user', username = logname)}}">{{ logname }}</a>{% endblock banner%}
+{% block content %}
+    <h1>Following</h1>
+    {% for follow in following %}
+        <img class = "followPicture" src="{{url_for('get_file', filename = follow['profile_picture']['filename'])}}" alt="user photo">
+        <a href="{{url_for('show_user', username = follow['username2'])}}">{{ follow["username2"] }}</a>
+        {# Relationship to logged in user #}
+        {% if follow["is_following"] == 1 %}
+            <div>following</div>
+            <form action="{{url_for('handle_following_operations', target = url_for('show_following', username = username))}}" method="post" enctype="multipart/form-data">
+                <input type="submit" name="unfollow" value="unfollow"/>
+                <input type="hidden" name="username" value="{{follow['username2']}}"/>
+                <input type="hidden" name="operation" value="unfollow"/>
+              </form>
+        {% elif follow["is_following"] == 0 %}
+            <div>not following</div>
+            <form action="{{url_for('handle_following_operations', target = url_for('show_following', username = username))}}" method="post" enctype="multipart/form-data">
+                <input type="submit" name="follow" value="follow"/>
+                <input type="hidden" name="username" value="{{follow['username2']}}"/>
+                <input type="hidden" name="operation" value="follow"/>
+              </form>
+        {% endif %}
+    {% endfor %}
+{% endblock content %}

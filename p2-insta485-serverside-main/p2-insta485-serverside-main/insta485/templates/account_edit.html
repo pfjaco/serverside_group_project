@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block banner %}<a href="{{url_for('show_user', username = logname)}}">{{ logname }}</a>{% endblock banner%}
+{% block content %}
+        <img class = "usernamePhoto" src = "{{url_for('get_file', filename = filename)}}" alt = "user profile picture"> {{logname}}
+
+        <form action="{{url_for('handle_account_operations', target = url_for('display_edit_account_form'))}}" method="post" enctype="multipart/form-data">
+            Photo <input type="file" name="file" accept="image/*"/>
+            <br>
+            Name <input type="text" name="fullname" value="{{fullname}}" required/>
+            <br>
+            Email <input type="text" name="email" value="{{email}}" required/>
+            <input type="submit" name="update" value="submit"/>
+            <input type="hidden" name="operation" value="edit_account"/>
+          </form>
+
+          <a href = "{{url_for('display_change_password')}}">Change Password</a>
+          <a href = "{{url_for('display_delete_account_form')}}">Delete Account</a>
+{% endblock content %}

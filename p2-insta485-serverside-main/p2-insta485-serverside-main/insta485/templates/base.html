@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div id="instabanner">
+        <h1><a href = "{{url_for('show_index')}}">insta485</a></h1>
+        <div class = "header">
+            <a href="{{url_for('show_explore')}}">explore</a> | 
+            {% block banner %}
+            <a href="{{url_for('show_user', username = logname)}}">{{logname}}</a>
+            {% endblock banner %}
+        </div>
+        
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock content %}
+    </div>
+</body>
+
+</html>
